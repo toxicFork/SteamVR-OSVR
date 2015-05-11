@@ -13,6 +13,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Dependencies
 #
 find_package(SteamVR REQUIRED)
+if(NOT STEAMVR_OPENVR)
+	message(FATAL_ERROR "This branch is for the SteamVR 'OpenVR' API only.")
+endif()
 find_package(osvr REQUIRED)
 find_package(jsoncpp REQUIRED)
 if(TARGET jsoncpp_lib_static AND NOT TARGET jsoncpp_lib)

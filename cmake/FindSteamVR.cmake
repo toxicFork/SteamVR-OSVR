@@ -58,57 +58,98 @@ else()
 	set(_libpath lib/${STEAMVR_PLATFORM})
 endif()
 
-find_library(STEAMVR_VRTEST_API_LIBRARY
+find_library(STEAMVR_OPENVR_API_LIBRARY
 	NAMES
-	vrtest_api
+	openvr_api
 	PATHS
 	${_root_dirs}
 	PATH_SUFFIXES
 	${_libpath}
 	public/${_libpath})
+if(STEAMVR_OPENVR_API_LIBRARY)
+	set(STEAMVR_OPENVR TRUE)
+	set(STEAMVR_STEAMWORKS_VR FALSE)
+	get_filename_component(_libdir "${STEAMVR_OPENVR_API_LIBRARY}" PATH)
+else()
+	find_library(STEAMVR_VRTEST_API_LIBRARY
+		NAMES
+		vrtest_api
+		PATHS
+		${_root_dirs}
+		PATH_SUFFIXES
+		${_libpath}
+		public/${_libpath})
 
-if(STEAMVR_VRTEST_API_LIBRARY)
-	get_filename_component(_libdir "${STEAMVR_VRTEST_API_LIBRARY}" PATH)
+	if(STEAMVR_VRTEST_API_LIBRARY)
+		set(STEAMVR_OPENVR FALSE)
+		set(STEAMVR_STEAMWORKS_VR TRUE)
+		get_filename_component(_libdir "${STEAMVR_VRTEST_API_LIBRARY}" PATH)
+	endif()
 endif()
 
-find_path(STEAMVR_INCLUDE_DIR
-	NAMES
-	steamvr.h
-	HINTS
-	"${_libdir}"
-	"${_libdir}/.."
-	"${_libdir}/../.."
-	PATHS
-	${_root_dirs}
-	PATH_SUFFIXES
-	headers
-	public/headers
-	steam
-	public/steam)
 
-find_path(STEAMVR_SOURCE_DIR
-	NAMES
-	common/ihmdsystem.h
-	HINTS
-	"${_libdir}"
-	"${_libdir}/.."
-	"${_libdir}/../.."
-	"${_libdir}/../../.."
-	PATHS
-	${_root_dirs}
-	PATH_SUFFIXES
-	src)
+if(STEAMVR_OPENVR)
+	find_path(STEAMVR_OPENVR_INCLUDE_DIR
+		NAMES
+		openvr.h
+		HINTS
+		"${_libdir}/../.."
+		PATH_SUFFIXES
+		headers)
+
+elseif(STEAMVR_STEAMWORKS_VR)
+	find_path(STEAMVR_INCLUDE_DIR
+		NAMES
+		steamvr.h
+		HINTS
+		"${_libdir}"
+		"${_libdir}/.."
+		"${_libdir}/../.."
+		PATHS
+		${_root_dirs}
+		PATH_SUFFIXES
+		headers
+		public/headers
+		steam
+		public/steam)
+
+	find_path(STEAMVR_SOURCE_DIR
+		NAMES
+		common/ihmdsystem.h
+		HINTS
+		"${_libdir}"
+		"${_libdir}/.."
+		"${_libdir}/../.."
+		"${_libdir}/../../.."
+		PATHS
+		${_root_dirs}
+		PATH_SUFFIXES
+		src)
+endif()
+
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SteamVR
-	DEFAULT_MSG
-	STEAMVR_INCLUDE_DIR)
+if(STEAMVR_OPENVR)
+	find_package_handle_standard_args(SteamVR
+		DEFAULT_MSG
+		STEAMVR_OPENVR_INCLUDE_DIR)
+	if(STEAMVR_FOUND)
+		set(STEAMVR_INCLUDE_DIRS ${STEAMVR_OPENVR_INCLUDE_DIR})
+		mark_as_advanced(STEAMVR_ROOT_DIR)
+	endif()
+else()
+	find_package_handle_standard_args(SteamVR
+		DEFAULT_MSG
+		STEAMVR_INCLUDE_DIR)
 
-if(STEAMVR_FOUND)
-	set(STEAMVR_INCLUDE_DIRS ${STEAMVR_INCLUDE_DIR})
-	mark_as_advanced(STEAMVR_ROOT_DIR)
+	if(STEAMVR_FOUND)
+		set(STEAMVR_INCLUDE_DIRS ${STEAMVR_INCLUDE_DIR})
+		mark_as_advanced(STEAMVR_ROOT_DIR)
+	endif()
 endif()
 
 mark_as_advanced(STEAMVR_INCLUDE_DIR
 	STEAMVR_SOURCE_DIR
+	STEAMVR_OPENVR_API_LIBRARY
+	STEAMVR_OPENVR_INCLUDE_DIR
 	STEAMVR_VRTEST_API_LIBRARY)

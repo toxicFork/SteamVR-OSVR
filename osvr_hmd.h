@@ -28,8 +28,7 @@
 #include "projection_matrix.h"
 
 // Library/third-party includes
-#include <steamvr.h>
-#include <ihmddriver.h>
+#include <openvr.h>
 
 #include <osvr/ClientKit/Context.h>
 #include <osvr/ClientKit/Interface.h>
@@ -102,7 +101,7 @@ public:
 	 * the per-eye flavor of view space that provides stereo disparity. Instead
 	 * of Model * View * Projection the model is Model * View * Eye *
 	 * Projection.  Normally View and Eye will be multiplied together and
-	 * treated as View in your application. 
+	 * treated as View in your application.
 	 */
     virtual vr::HmdMatrix44_t GetEyeMatrix(vr::Hmd_Eye eEye) OSVR_OVERRIDE;
 
