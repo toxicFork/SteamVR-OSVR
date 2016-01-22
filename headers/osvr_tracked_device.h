@@ -49,7 +49,7 @@
 class OSVRTrackedDevice : public vr::ITrackedDeviceServerDriver
 {
 public:
-    OSVRTrackedDevice(const std::string& display_description, osvr::clientkit::ClientContext& context, vr::IServerDriverHost* driver_host, vr::IDriverLog* driver_log = nullptr);
+    OSVRTrackedDevice(const std::string& device_description, osvr::clientkit::ClientContext& context, vr::IServerDriverHost* driver_host, vr::ETrackedDeviceClass deviceClass, vr::IDriverLog* driver_log = nullptr);
 
     // ------------------------------------
     // Management Methods
@@ -76,7 +76,7 @@ public:
      * system itself, but should be unique within the driver because it will be
      * passed back in via FindHmd().
      */
-    virtual const char* GetId() OSVR_OVERRIDE;
+    virtual const char* GetId() = 0;
 
     /**
      * A VR Client has made this debug request of the driver. The set of valid
@@ -168,6 +168,9 @@ public:
      */
     virtual bool GetBoolTrackedDeviceProperty(vr::ETrackedDeviceProperty prop, vr::ETrackedPropertyError* error) OSVR_OVERRIDE;
 
+protected:
+    virtual float GetFloatProperty(vr::ETrackedDeviceProperty e_tracked_device_property, vr::ETrackedPropertyError* error) = 0;
+public:
     /**
      * Returns a float property. If the property is not available this function
      * will return 0.
@@ -243,19 +246,14 @@ public:
 	virtual bool GetCameraFirmwareVersion( uint64_t *pFirmwareVersion ) OSVR_OVERRIDE;
 	virtual bool SetFrameRate( int nISPFrameRate, int nSensorFrameRate ) OSVR_OVERRIDE;
 
-private:
-    static void HmdTrackerCallback(void* userdata, const OSVR_TimeValue* timestamp, const OSVR_PoseReport* report);
-    float GetIPD();
-    const std::string m_DisplayDescription;
+protected:
+    const std::string m_DeviceDescription;
     osvr::clientkit::ClientContext& m_Context;
-    osvr::clientkit::DisplayConfig m_DisplayConfig;
-    osvr::client::RenderManagerConfig m_RenderManagerConfig;
     vr::IDriverLog* logger_ = nullptr;
     vr::IServerDriverHost* driver_host_ = nullptr;
     osvr::clientkit::Interface m_TrackerInterface;
     vr::DriverPose_t pose_;
     vr::ETrackedDeviceClass deviceClass_;
-
 };
 
 

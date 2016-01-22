@@ -23,6 +23,7 @@
 // limitations under the License.
 
 #include "headers/ServerDriver_OSVR.h"
+#include <headers/osvr_hmd_device.h>
 
 vr::EVRInitError ServerDriver_OSVR::Init(vr::IDriverLog* driver_log, vr::IServerDriverHost* driver_host, const char* user_driver_config_dir, const char* driver_install_dir)
 {
@@ -32,7 +33,7 @@ vr::EVRInitError ServerDriver_OSVR::Init(vr::IDriverLog* driver_log, vr::IServer
     context_ = std::make_unique<osvr::clientkit::ClientContext>("com.osvr.SteamVR");
 
     const std::string display_description = context_->getStringParameter("/display");
-    trackedDevices_.emplace_back(std::make_unique<OSVRTrackedDevice>(display_description, *(context_.get()), driver_host, logger_));
+    trackedDevices_.emplace_back(std::make_unique<OSVRHMDDevice>(display_description, *(context_.get()), driver_host, logger_));
 
     return vr::VRInitError_None;
 }

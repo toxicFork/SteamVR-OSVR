@@ -70,6 +70,7 @@ set(HEADER_FILES
 	headers/osvr_tracked_device.h
 	headers/ServerDriver_OSVR.h
 	headers/driver_osvr.h
+	headers/osvr_hmd_device.h
 )
 
 set(SOURCE_FILES
@@ -77,6 +78,7 @@ set(SOURCE_FILES
 	src/osvr_tracked_device.cpp
 	src/ServerDriver_OSVR.cpp
 	src/ClientDriver_OSVR.cpp
+	src/osvr_hmd_device.cpp
 )
 
 add_library(driver_osvr
