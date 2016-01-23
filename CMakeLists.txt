@@ -72,6 +72,7 @@ set(HEADER_FILES
 	headers/driver_osvr.h
 	headers/osvr_hmd_device.h
 	headers/osvr_hand_device.h
+	headers/osvr_camera_device.h
 )
 
 set(SOURCE_FILES
@@ -81,6 +82,7 @@ set(SOURCE_FILES
 	src/ClientDriver_OSVR.cpp
 	src/osvr_hmd_device.cpp
 	src/osvr_hand_device.cpp
+	src/osvr_camera_device.cpp
 )
 
 add_library(driver_osvr
