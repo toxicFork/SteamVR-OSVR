@@ -113,6 +113,7 @@ public:
 protected:
     float GetFloatProperty(vr::ETrackedDeviceProperty prop, vr::ETrackedPropertyError* error) OSVR_OVERRIDE;
 private:
+    const std::string m_DisplayDescription;
     static void HmdTrackerCallback(void* userdata, const OSVR_TimeValue* timestamp, const OSVR_PoseReport* report);
     float GetIPD();
     osvr::clientkit::DisplayConfig m_DisplayConfig;

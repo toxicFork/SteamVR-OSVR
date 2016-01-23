@@ -49,7 +49,11 @@
 class OSVRTrackedDevice : public vr::ITrackedDeviceServerDriver
 {
 public:
-    OSVRTrackedDevice(const std::string& device_description, osvr::clientkit::ClientContext& context, vr::IServerDriverHost* driver_host, vr::ETrackedDeviceClass deviceClass, vr::IDriverLog* driver_log = nullptr);
+    virtual ~OSVRTrackedDevice()
+    {
+    }
+
+    OSVRTrackedDevice(osvr::clientkit::ClientContext& context, vr::IServerDriverHost* driver_host, vr::ETrackedDeviceClass deviceClass, vr::IDriverLog* driver_log = nullptr);
 
     // ------------------------------------
     // Management Methods
@@ -247,7 +251,6 @@ public:
 	virtual bool SetFrameRate( int nISPFrameRate, int nSensorFrameRate ) OSVR_OVERRIDE;
 
 protected:
-    const std::string m_DeviceDescription;
     osvr::clientkit::ClientContext& m_Context;
     vr::IDriverLog* logger_ = nullptr;
     vr::IServerDriverHost* driver_host_ = nullptr;

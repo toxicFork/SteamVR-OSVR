@@ -24,8 +24,7 @@ Sensics, Inc.
 
 #include <headers/osvr_tracked_device.h>
 
-OSVRTrackedDevice::OSVRTrackedDevice(const std::string& device_description, osvr::clientkit::ClientContext& context, vr::IServerDriverHost* driver_host, vr::ETrackedDeviceClass deviceClass, vr::IDriverLog* driver_log) : 
-    m_DeviceDescription(device_description),
+OSVRTrackedDevice::OSVRTrackedDevice(osvr::clientkit::ClientContext& context, vr::IServerDriverHost* driver_host, vr::ETrackedDeviceClass deviceClass, vr::IDriverLog* driver_log) : 
     m_Context(context), 
     driver_host_(driver_host), 
     logger_(driver_log), 

@@ -24,6 +24,7 @@
 
 #include "headers/ServerDriver_OSVR.h"
 #include <headers/osvr_hmd_device.h>
+#include <headers/osvr_hand_device.h>
 
 vr::EVRInitError ServerDriver_OSVR::Init(vr::IDriverLog* driver_log, vr::IServerDriverHost* driver_host, const char* user_driver_config_dir, const char* driver_install_dir)
 {
@@ -34,6 +35,7 @@ vr::EVRInitError ServerDriver_OSVR::Init(vr::IDriverLog* driver_log, vr::IServer
 
     const std::string display_description = context_->getStringParameter("/display");
     trackedDevices_.emplace_back(std::make_unique<OSVRHMDDevice>(display_description, *(context_.get()), driver_host, logger_));
+    trackedDevices_.emplace_back(std::make_unique<OSVRHandDevice>(*(context_.get()), driver_host, logger_));
 
     return vr::VRInitError_None;
 }

@@ -25,7 +25,8 @@ Sensics, Inc.
 #include <headers/osvr_hmd_device.h>
 
 OSVRHMDDevice::OSVRHMDDevice(const std::string& display_description, osvr::clientkit::ClientContext& context, vr::IServerDriverHost* driver_host, vr::IDriverLog* driver_log) :
-    OSVRTrackedDevice(display_description, context, driver_host, vr::TrackedDeviceClass_HMD, driver_log)
+    OSVRTrackedDevice(context, driver_host, vr::TrackedDeviceClass_HMD, driver_log),
+    m_DisplayDescription(display_description)
 {
 }
 
